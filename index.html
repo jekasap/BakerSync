@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BakerSync | The Order Book for Smart Bakeries</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        baker: {
+                            50: '#fdf8f6',
+                            100: '#f2e8e5',
+                            200: '#e6d3cd',
+                            500: '#d97757', // warm terracotta
+                            600: '#c55e3f',
+                            800: '#6b3c2d',
+                            900: '#4a2c23', // dark roast
+                        }
+                    },
+                    animation: {
+                        'float-slow': 'float 6s ease-in-out infinite',
+                        'float-med': 'float 5s ease-in-out infinite',
+                        'float-fast': 'float 4s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .bg-pattern {
+            background-color: #fdf8f6;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='#d97757' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-baker-50 text-baker-900 font-sans">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md z-50 border-b border-baker-100">
+        <div class="max-w-5xl mx-auto px-5 py-4 flex justify-between items-center">
+            <div class="font-serif font-bold text-2xl tracking-tight text-baker-900">
+                Baker<span class="text-baker-500">Sync</span>
+            </div>
+            <a href="#pricing" class="text-sm font-semibold text-baker-600 hover:text-baker-800 transition-colors">
+                Pricing
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-16 px-5 bg-pattern overflow-hidden relative">
+        <div class="max-w-md mx-auto text-center relative z-10">
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-[1.15] mb-6 font-serif text-baker-900">
+                Never lose an order in the <span class="text-baker-500 italic">chaos</span> again.
+            </h1>
+            <p class="text-lg text-baker-800/80 mb-10 leading-relaxed font-medium">
+                Stop juggling WhatsApp, Instagram DMs, emails, and sticky notes. Funnel every bakery order into one safe place.
+            </p>
+
+            <!-- Abstract Chaos Container (Pure CSS/HTML, no images) -->
+            <div class="relative w-full h-64 sm:h-72 rounded-3xl mb-12 shadow-2xl bg-gradient-to-br from-white to-baker-100 border-4 border-white isolate overflow-hidden">
+                
+                <!-- Background ambient circles -->
+                <div class="absolute top-[-20%] left-[-10%] w-40 h-40 bg-pink-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-pulse-slow"></div>
+                <div class="absolute bottom-[-10%] right-[-10%] w-48 h-48 bg-green-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-pulse-slow" style="animation-delay: 1s;"></div>
+                <div class="absolute top-[30%] left-[30%] w-32 h-32 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-60 animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+                <!-- Floating UI: Customer Thought -->
+                <div class="absolute top-4 right-4 sm:right-8 bg-white px-4 py-3 rounded-2xl rounded-tr-sm shadow-xl border border-baker-50 animate-float-slow z-20 max-w-[160px]">
+                    <div class="flex items-start gap-2 text-left">
+                        <span class="text-lg leading-none mt-0.5">😰</span>
+                        <div class="text-xs font-bold text-gray-800 leading-tight">
+                            "Wait, did she say nut allergy?!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating UI: WhatsApp -->
+                <div class="absolute top-1/3 left-2 sm:left-6 bg-white/95 backdrop-blur-sm px-4 py-2.5 rounded-xl shadow-lg border border-green-100 animate-float-med flex items-center gap-2.5 z-20">
+                    <div class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse-slow"></div>
+                    <span class="text-xs font-bold text-gray-700">WhatsApp: 3 cakes for Fri?</span>
+                </div>
+
+                <!-- Floating UI: Insta DM -->
+                <div class="absolute bottom-1/4 right-2 sm:right-6 bg-white/95 backdrop-blur-sm px-4 py-2.5 rounded-xl shadow-lg border border-pink-100 animate-float-fast flex items-center gap-2.5 z-20">
+                    <div class="w-2.5 h-2.5 rounded-full bg-pink-500 animate-pulse-slow"></div>
+                    <span class="text-xs font-bold text-gray-700">Insta: Hi, can I order...</span>
+                </div>
+
+                <!-- Floating UI: Walk in -->
+                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 sm:-translate-x-12 bg-white/95 backdrop-blur-sm px-4 py-2.5 rounded-xl shadow-xl border border-blue-100 animate-float-slow flex items-center gap-2.5 z-20 whitespace-nowrap" style="animation-delay: 1.5s;">
+                    <span class="text-lg leading-none">🚶</span>
+                    <span class="text-xs font-bold text-gray-700">"I need 4 dozen cookies"</span>
+                </div>
+            </div>
+
+            <a href="app.html" class="inline-block w-full bg-baker-500 hover:bg-baker-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-baker-500/30 transition-all active:scale-[0.98] text-lg">
+                Try the Live Demo
+            </a>
+            <p class="text-center text-xs text-baker-800/50 mt-4 font-bold uppercase tracking-widest">No credit card required</p>
+        </div>
+    </header>
+
+    <!-- The Quote / Problem -->
+    <section class="py-20 px-5 bg-baker-900 text-white relative">
+        <div class="max-w-2xl mx-auto text-center relative z-10">
+            <svg class="w-12 h-12 mx-auto text-baker-500 mb-6 opacity-40" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+            
+            <blockquote class="text-2xl sm:text-3xl font-serif italic leading-snug mb-10">
+                "Orders were coming from everywhere. I was terrified I'd miss an allergy warning buried in an Instagram DM while serving someone at the counter."
+            </blockquote>
+            
+            <div class="flex items-center justify-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-baker-800 border-2 border-baker-500 flex items-center justify-center text-baker-100 font-bold text-lg">
+                    A
+                </div>
+                <div class="text-left">
+                    <div class="font-bold text-base">Aoife</div>
+                    <div class="text-sm text-baker-200">Owner, Kettle & Crumb</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works & The Solution -->
+    <section class="py-20 px-5 bg-white">
+        <div class="max-w-md md:max-w-3xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-baker-500 font-bold tracking-widest uppercase text-sm mb-3 block">The Solution</span>
+                <h2 class="text-3xl sm:text-4xl font-bold font-serif text-baker-900">How BakerSync Works</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-10 mb-16">
+                <!-- Step 1 -->
+                <div class="flex flex-col items-center text-center md:items-start md:text-left gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-baker-100 text-baker-600 flex items-center justify-center font-bold text-xl shadow-sm">1</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-3 text-baker-900">One Master Inbox</h3>
+                        <p class="text-baker-800/80 text-base leading-relaxed">Whether they DM, email, or call, you enter it into one clean screen. No more checking four different apps to plan your bake.</p>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex flex-col items-center text-center md:items-start md:text-left gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-baker-100 text-baker-600 flex items-center justify-center font-bold text-xl shadow-sm">2</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-3 text-baker-900">Allergies Up Front</h3>
+                        <p class="text-baker-800/80 text-base leading-relaxed">We force you to log dietary needs right at the top of the ticket. If there's a nut allergy, the whole ticket flashes red. It is impossible to miss.</p>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="flex flex-col items-center text-center md:items-start md:text-left gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-baker-100 text-baker-600 flex items-center justify-center font-bold text-xl shadow-sm">3</div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-3 text-baker-900">Bake with Confidence</h3>
+                        <p class="text-baker-800/80 text-base leading-relaxed">Walk into the kitchen knowing exactly what needs to be made, for who, and when. Sleep better at night.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Beautiful Success Block (Pure CSS/HTML) -->
+            <div class="max-w-md mx-auto rounded-2xl shadow-xl border border-green-100 bg-gradient-to-br from-green-50 to-emerald-50 p-6 relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute -right-6 -top-6 w-24 h-24 bg-green-200 rounded-full opacity-50"></div>
+                <div class="absolute -left-4 -bottom-4 w-16 h-16 bg-emerald-200 rounded-full opacity-50"></div>
+                
+                <div class="relative z-10 flex flex-col sm:flex-row items-center gap-5 text-center sm:text-left">
+                    <div class="w-16 h-16 shrink-0 rounded-full bg-white shadow-md text-green-600 flex items-center justify-center font-bold">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <div>
+                        <div class="text-lg font-extrabold text-green-900 mb-1">All orders synced.</div>
+                        <div class="text-sm font-semibold text-green-700/80">Ready for tomorrow's bake.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing & Waitlist -->
+    <section id="pricing" class="py-24 px-5 bg-baker-100">
+        <div class="max-w-md mx-auto">
+            <div class="bg-white rounded-[2rem] p-8 sm:p-10 shadow-xl border border-white text-center relative overflow-hidden">
+                <!-- Decorative top banner -->
+                <div class="absolute top-0 left-0 w-full h-2 bg-baker-500"></div>
+
+                <h2 class="text-3xl font-bold mb-3 font-serif text-baker-900">Simple Pricing</h2>
+                <p class="text-baker-800/70 text-base mb-8">For small bakeries that need peace of mind.</p>
+                
+                <div class="flex justify-center items-baseline gap-1 mb-10">
+                    <span class="text-5xl font-extrabold tracking-tight text-baker-900">€29</span>
+                    <span class="text-baker-800/60 font-bold">/month</span>
+                </div>
+
+                <ul class="text-left space-y-4 mb-10 text-base font-medium text-baker-900/90">
+                    <li class="flex items-start gap-3">
+                        <svg class="w-6 h-6 text-baker-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 
+                        Unlimited multi-channel orders
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-6 h-6 text-baker-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 
+                        Prominent allergy alert system
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <svg class="w-6 h-6 text-baker-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 
+                        Works beautifully on phone & tablet
+                    </li>
+                </ul>
+
+                <!-- Waitlist Form Container -->
+                <div id="waitlist-container" class="bg-baker-50 rounded-2xl p-5 border border-baker-100">
+                    <p class="text-sm font-bold mb-4 text-baker-900">We're currently in Beta. Join the waitlist.</p>
+                    <form id="waitlist-form" class="space-y-3">
+                        <input type="email" required placeholder="Enter your email address" class="w-full px-5 py-4 rounded-xl border border-baker-200 bg-white focus:outline-none focus:ring-2 focus:ring-baker-500 transition-shadow text-base text-baker-900 placeholder-baker-800/40 font-medium">
+                        <button type="submit" class="w-full bg-baker-900 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-baker-800 transition-colors text-lg">
+                            Join the Waitlist
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Success Message (Hidden by default) -->
+                <div id="success-message" class="hidden bg-green-50 border-2 border-green-200 text-green-900 rounded-2xl p-6 text-center">
+                    <div class="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-green-700 mx-auto mb-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h4 class="text-lg font-bold mb-1">You're on the list!</h4>
+                    <p class="text-sm font-medium text-green-800/80">We'll email you the moment a beta spot opens up for your bakery.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 text-center text-sm font-semibold text-baker-800/50 bg-white border-t border-baker-100">
+        &copy; 2026 BakerSync.
+    </footer>
+
+    <!-- Form Handling Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('waitlist-form');
+            const container = document.getElementById('waitlist-container');
+            const successMsg = document.getElementById('success-message');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Stop actual form submission
+                
+                // Hide the form input container
+                container.style.display = 'none';
+                
+                // Show the success message
+                successMsg.classList.remove('hidden');
+                
+                // Trigger a subtle animation
+                successMsg.animate([
+                    { opacity: 0, transform: 'scale(0.95)' },
+                    { opacity: 1, transform: 'scale(1)' }
+                ], { duration: 250, easing: 'ease-out' });
+            });
+        });
+    </script>
+</body>
+</html>
